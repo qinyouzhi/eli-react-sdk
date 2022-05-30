@@ -1,13 +1,11 @@
 import React, { FC } from 'react';
 
 interface TestProps {
-  name: string
+  name: string;
 }
 
-const Test: FC<TestProps> = (props: { name: any; }) => {
-  return (
-    <div>{props.name}</div>
-  )
-}
+const Test: FC<TestProps> = (props: { name: any }) => {
+  return <div>{props.name}</div>;
+};
 
 export default Test;
