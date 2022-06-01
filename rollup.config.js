@@ -1,7 +1,7 @@
 import pkg from './package.json';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import babel from 'rollup-plugin-babel';
 import typescript from 'rollup-plugin-typescript2';
 import filesize from 'rollup-plugin-filesize';
@@ -26,8 +26,8 @@ const config = [
         name,
         file: `./lib/${name}.js`,
         format: 'cjs',
-        sourcemap
-      }
+        sourcemap,
+      },
     ],
     plugins: [
       resolve(), // 这样 Rollup 能找到 `ms`
@@ -38,15 +38,15 @@ const config = [
       }),
       eslint({
         include: ['src/**'],
-        exclude: ['node_modules/**']
+        exclude: ['node_modules/**'],
       }),
       babel({
         exclude: 'node_modules/**', // 防止打包node_modules下的文件
-        runtimeHelpers: true,       // 使plugin-transform-runtime生效
+        runtimeHelpers: true, // 使plugin-transform-runtime生效
         extensions: ['.ts', '.js'],
       }),
       terser(),
-      filesize()
+      filesize(),
     ],
   },
 ];
