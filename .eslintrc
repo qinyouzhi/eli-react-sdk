@@ -48,6 +48,7 @@
     "space-in-parens": 2, // 圆括号间不留空格
     // react配置
     "react/sort-comp": [2], // 强制组件方法顺序
+    "react/react-in-jsx-scope": [0],
     "react/self-closing-comp": [2, { "component": true, "html": false }], // 结束标签，组件省略闭合标签，html不省略闭合标签
     "react-hooks/rules-of-hooks": [2],  // 检查 Hook 的规则，不允许在if for里面使用
     "react-hooks/exhaustive-deps": [2]  // 检查 effect 的依赖

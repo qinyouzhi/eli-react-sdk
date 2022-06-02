@@ -1,6 +1,17 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "experimentalDecorators": true,
+    "baseUrl": "./",
+    "paths": {
+      "@@/*": ["./*"],
+      "@/*": ["src/*"],
+      "@api/*": ["src/api/*"],
+      "@enum/*": ["src/enum/*"],
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"]
+    },
     "lib": [
       "dom",
       "dom.iterable",
@@ -11,6 +22,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -21,6 +33,11 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "typings/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
   ]
 }
