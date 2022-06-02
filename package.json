@@ -1,12 +1,12 @@
 {
   "name": "eli-react-sdk",
-  "version": "1.1.0",
+  "version": "1.0.6",
   "description": "鳄梨科技 React SDK",
   "author": "鳄梨科技",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/index.js",
   "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "lib/types/index.d.ts",
   "files": [
     "lib"
   ],
@@ -27,7 +27,9 @@
   },
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --config ./config/webpack.dev.js",
-    "build": "rimraf lib && NODE_ENV=production webpack --config ./config/webpack.prod.js",
+    "build": "rimraf lib && NODE_ENV=production webpack --config ./config/webpack.prod.js && tsc",
+    "release": "np --no-yarn --no-tests --no-cleanup",
+    "pub": "npm run build && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.ts,.tsx src/",
     "lint-fix": "eslint --fix --ext .js,.ts,.tsx src/"
@@ -83,6 +85,7 @@
     "happypack": "^5.0.1",
     "html-webpack-plugin": "^5.4.0",
     "mini-css-extract-plugin": "^2.4.2",
+    "np": "^7.6.1",
     "prettier": "^2.6.2",
     "progress-bar-webpack-plugin": "^2.1.0",
     "react-refresh": "^0.13.0",

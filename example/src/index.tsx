@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Test } from '../../src';
+import { createRoot } from 'react-dom/client';
+import { Test } from '../../lib';
 
 const App: React.FC = () => {
   return (
@@ -10,4 +10,6 @@ const App: React.FC = () => {
   );
 };
 
-render(<App />, document.querySelector('#app'));
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App />);

@@ -8,11 +8,17 @@ const resolve = _path => path.resolve(__dirname, _path);
 module.exports = merge(base, {
   mode: 'production',
   entry: resolve('../src/index'),
+  experiments: {
+    outputModule: true,
+  },
   output: {
-    path: resolve('../lib'),
+    path: resolve('../lib/'),
     filename: 'index.js',
-    libraryTarget: 'umd', // 采用通用模块定义
-    libraryExport: 'default', // 兼容 ES6 Module、CommonJS 和 AMD 模块规范
+    library: { type: 'module' },
+    environment: {
+      module: true,
+      dynamicImport: true,
+    },
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -22,6 +28,7 @@ module.exports = merge(base, {
   optimization: {
     minimize: true, // 开启代码压缩
   },
+  externalsType: 'module',
   externals: {
     react: 'react',
     'react-dom': 'react-dom',
