@@ -4,6 +4,8 @@ config/
 example/
 src/
 static/
+docs/
+deploy/
 .babelrc
 .editorconfig
 .gitignore
@@ -11,6 +13,8 @@ static/
 .eslintignore
 .prettierrc
 .prettierignore
+.README.md
+LICENSE
 package-lock.json
 tsconfig.json
 yarn.lock

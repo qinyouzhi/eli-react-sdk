@@ -1,35 +1,32 @@
 const webpack = require('webpack');
 const path = require('path');
-const os = require('os');
-const HappyPack = require('happypack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');
 
 const resolve = _path => path.resolve(__dirname, _path);
+const {
+  env: { NODE_ENV, REACT_APP_ENV },
+} = process;
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = NODE_ENV === 'development';
+const isProd = NODE_ENV === 'production' && REACT_APP_ENV === 'prod';
 
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
-const happyPack = new HappyPack({
-  id: 'babel',
-  loaders: [
-    {
-      loader: 'babel-loader',
-      options: {
-        cacheDirectory: true,
-        presets: ['@babel/preset-env', '@babel/preset-react'],
-        plugins: [
-          ['@babel/plugin-proposal-decorators', { legacy: true }],
-          ['@babel/plugin-transform-runtime', { legacy: true }],
-          ['@babel/plugin-proposal-class-properties', { legacy: true }],
-        ],
-      },
-    },
-  ],
-  // 共享进程池
-  threadPool: happyThreadPool,
-  // 允许 HappyPack 输出日志
-  verbose: true,
+const getGlobalConstants = () => {
+  const _pathName = isDev ? 'dev' : isProd ? 'prod' : 'test';
+  const _path = `./env.${_pathName}.js`;
+  const originalConstants = require(_path);
+  const appliedConstants = {};
+  Object.keys(originalConstants).forEach(key => {
+    appliedConstants[key] = JSON.stringify(originalConstants[key]);
+  });
+  return appliedConstants;
+};
+
+const progressPlugin = new ProgressBarWebpackPlugin({
+  format: 'building [:bar] :percent (:elapsed seconds)',
+  clear: false,
+  width: 30,
 });
 
 process.env.BROWSER = 'none';
@@ -40,14 +37,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx|mjs|cjs)$/, // 匹配哪些文件
-        exclude: /(node_modules|bower_components)/,
+        test: /\.(js|jsx|ts|tsx|mjs|cjs)$/,
+        exclude: /(node_modules)/,
         use: [
-          'happypack/loader?id=babel',
           {
             loader: 'babel-loader',
             options: {
               plugins: [isDev && 'react-refresh/babel'].filter(Boolean),
+            },
+          },
+          {
+            loader: 'thread-loader',
+            options: {
+              workerParallelJobs: 2,
             },
           },
         ],
@@ -64,7 +66,6 @@ module.exports = {
                 auto: true,
                 exportGlobals: true,
                 localIdentName: '[local]_[hash:base64:6]',
-                localIdentContext: resolve('../src'),
               },
             },
           },
@@ -77,16 +78,24 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|jpeg|gif|svg)$/,
-        type: 'asset',
-        parser: {
-          dataUrlCondition: {
-            maxSize: 8 * 1024,
+        test: /\.(png|jpg|jpeg|gif)$/,
+        exclude: /(node_modules)/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'images/[hash]-[name].[ext]',
+            },
           },
-        },
-        generator: {
-          filename: 'assets/images/[hash][ext]',
-        },
+        ],
+      },
+      {
+        test: /\.svg$/,
+        exclude: /(node_modules)/,
+        use: [
+          { loader: 'svg-sprite-loader', options: {} },
+          { loader: 'svgo-loader', options: {} },
+        ],
       },
       { test: /\.(woff(2)?|eot|ttf|otf)$/, type: 'asset/resource' },
     ],
@@ -96,11 +105,12 @@ module.exports = {
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       REACT_APP_ENV: JSON.stringify(process.env.REACT_APP_ENV),
+      ...getGlobalConstants(),
     }),
     new webpack.ProvidePlugin({
       React: 'react',
     }),
-    happyPack,
+    progressPlugin,
   ],
   // 解析
   resolve: {
@@ -110,10 +120,16 @@ module.exports = {
       '@@': resolve('../'),
       '@': resolve('../src'),
       '@components': resolve('../src/components'),
-      '@api': resolve('../src/api'),
+      '@services': resolve('../src/services'),
       '@utils': resolve('../src/utils'),
       '@hooks': resolve('../src/hooks'),
       '@enum': resolve('../src/enum'),
+      '@store': resolve('../src/store'),
+      '@constans': resolve('../src/constans'),
+      '@assets': resolve('../src/assets'),
     },
+  },
+  cache: {
+    type: 'filesystem', // 使用文件缓存
   },
 };

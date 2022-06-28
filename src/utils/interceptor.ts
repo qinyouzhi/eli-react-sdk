@@ -1,12 +1,8 @@
 import axios from 'axios';
 
-// 创建 axios 实例
 const service = axios.create({
-  baseURL: '/api', // api base_url
-  timeout: 60000, // 请求超时时间
-  headers: {
-    Auth: '',
-  },
+  baseURL: PUBLIC_BASE_URL || 'https://fbm-api.fbmms.cn',
+  timeout: 60000,
 });
 
 const err = error => {
@@ -25,23 +21,21 @@ const err = error => {
   return Promise.reject(error);
 };
 
-/**
- * 处理参数
- * @param {*} config
- */
-const handleParams = config => {
+const handleParams = async config => {
   return config;
 };
 
-// request interceptor
 service.interceptors.request.use(config => {
   return handleParams(config);
 }, err);
 
-// response interceptor
 service.interceptors.response.use(response => {
-  const { status } = response;
-  if (status === 200) {
+  const {
+    status,
+    data: { code },
+  } = response;
+
+  if (status === 200 && code === 0) {
     return response.data;
   }
 
