@@ -26,14 +26,14 @@
 +-- config/                                 ---webpack配置文件目录
 +-- node_modules/                           ---npm下载文件目录
 +-- example/
-|   +-- src/       
+|   +-- src/
 |   |    +-- routers                        ---路由配置
 |   |    +-- views                          ---组件测试
-|   |    --- index.tsx                      ---入口文件             
+|   |    --- index.tsx                      ---入口文件
 |   --- index.html                          ---入口html文件
 +-- src/                                    ---核心代码目录
 |   +-- components                          ---公共组件存放目录
-|   +-- constans                            ---公用变量存放目录
+|   +-- constants                           ---公用变量存放目录
 |   +-- enum                                ---枚举文件存放目录
 |   +-- modules                             ---核心开发模块
 |   +-- services                            ---接口请求存放目录

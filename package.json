@@ -14,6 +14,7 @@
   ],
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
@@ -56,13 +57,14 @@
     "start:demo2": "NODE_ENV=development REACT_APP_ENV=demo2 webpack-dev-server --config ./config/webpack.dev.js",
     "build:demo2": "npm run clean && NODE_ENV=production REACT_APP_ENV=demo2 webpack --config ./config/webpack.test.js",
     "lib": "npm run clean && npm run lib:cjs && npm run lib:esm",
-    "lib:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
-    "lib:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
+    "lib:cjs": "ttsc -p tsconfig.json --target ES5 --module commonjs --outDir lib && node ./scripts/copy.js",
+    "lib:esm": "ttsc -p tsconfig.json --target ES5 --module ESNext --outDir esm && node ./scripts/copy.js",
     "release": "np --no-yarn --no-tests --no-cleanup",
     "pub": "npm run lib && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.ts,.tsx src/",
-    "lint-fix": "eslint --fix --ext .js,.ts,.tsx src/"
+    "lint-fix": "eslint --fix --ext .js,.ts,.tsx src/",
+    "commit": "git add . && commit"
   },
   "eslintConfig": {
     "extends": [
@@ -98,6 +100,9 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/prompt-cli": "^17.0.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.6",
     "@types/webpack-env": "^1.17.0",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
@@ -117,6 +122,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "3.4.1",
     "eslint-plugin-react": "^7.30.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.12",
     "html-webpack-plugin": "^5.4.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
@@ -127,10 +133,14 @@
     "react-refresh": "^0.13.0",
     "sass": "^1.51.0",
     "sass-loader": "^12.4.0",
+    "shelljs": "^0.8.5",
     "style-loader": "^3.3.0",
     "svg-sprite-loader": "^6.0.11",
     "svgo-loader": "^3.0.1",
     "thread-loader": "^3.0.4",
+    "ts-loader": "^9.3.1",
+    "ttypescript": "^1.5.13",
+    "typescript-transform-paths": "^3.3.1",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.9.0",

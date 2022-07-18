@@ -16,7 +16,7 @@ module.exports = merge(base, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'eli-react-sdk',
+      title: 'web sdk',
       template: resolve('../example/index.html'),
       filename: 'index.html',
       inject: true,
@@ -25,7 +25,7 @@ module.exports = merge(base, {
   ],
   devtool: 'eval-source-map',
   devServer: {
-    port: 8888,
+    port: 8080,
     hot: true,
     headers: {
       'Access-Control-Allow-Origin': '*',

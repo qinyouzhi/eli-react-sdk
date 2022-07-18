@@ -3,6 +3,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const resolve = _path => path.resolve(__dirname, _path);
 const {
@@ -44,6 +45,12 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               plugins: [isDev && 'react-refresh/babel'].filter(Boolean),
+            },
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
             },
           },
           {
@@ -110,6 +117,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       React: 'react',
     }),
+    new ForkTsCheckerWebpackPlugin(),
     progressPlugin,
   ],
   // 解析
@@ -125,7 +133,7 @@ module.exports = {
       '@hooks': resolve('../src/hooks'),
       '@enum': resolve('../src/enum'),
       '@store': resolve('../src/store'),
-      '@constans': resolve('../src/constans'),
+      '@constants': resolve('../src/constants'),
       '@assets': resolve('../src/assets'),
     },
   },

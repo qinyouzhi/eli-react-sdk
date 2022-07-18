@@ -6,6 +6,8 @@ src/
 static/
 docs/
 deploy/
+.husky/
+.vscode/
 .babelrc
 .editorconfig
 .gitignore
