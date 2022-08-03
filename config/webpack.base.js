@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const constant = require('../scripts/constant');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');
@@ -7,7 +8,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const resolve = _path => path.resolve(__dirname, _path);
 const {
-  env: { NODE_ENV },
+  env: { NODE_ENV, REACT_APP_ENV },
 } = process;
 
 const isDev = NODE_ENV === 'development';
@@ -90,7 +91,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      NODE_ENV: JSON.stringify(NODE_ENV),
+      REACT_APP_ENV: JSON.stringify(REACT_APP_ENV),
+      PUBLIC_BASE_URL: constant.PUBLIC_BASE_URL,
     }),
     new webpack.ProvidePlugin({
       React: 'react',

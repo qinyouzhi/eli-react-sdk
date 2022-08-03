@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: 'https://fbm-api.fbmms.cn',
+  baseURL: PUBLIC_BASE_URL,
   timeout: 60000,
 });
 

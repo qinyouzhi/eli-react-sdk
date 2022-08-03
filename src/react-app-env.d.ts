@@ -1,5 +1,7 @@
 // / <reference types="react-scripts" />
 
+declare const PUBLIC_BASE_URL: string;
+
 declare module '*.avif' {
   const src: string;
   export default src;
