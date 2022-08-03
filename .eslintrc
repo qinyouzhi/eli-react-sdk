@@ -15,7 +15,6 @@
   "globals": {
     "process": true,
     "__dirname": true,
-    "PUBLIC_BASE_URL": true
   },
   "plugins": [
     "react",

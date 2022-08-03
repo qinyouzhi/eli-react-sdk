@@ -7,22 +7,10 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const resolve = _path => path.resolve(__dirname, _path);
 const {
-  env: { NODE_ENV, REACT_APP_ENV },
+  env: { NODE_ENV },
 } = process;
 
 const isDev = NODE_ENV === 'development';
-const isProd = NODE_ENV === 'production' && REACT_APP_ENV === 'prod';
-
-const getGlobalConstants = () => {
-  const _pathName = isDev ? 'dev' : isProd ? 'prod' : 'test';
-  const _path = `./env.${_pathName}.js`;
-  const originalConstants = require(_path);
-  const appliedConstants = {};
-  Object.keys(originalConstants).forEach(key => {
-    appliedConstants[key] = JSON.stringify(originalConstants[key]);
-  });
-  return appliedConstants;
-};
 
 const progressPlugin = new ProgressBarWebpackPlugin({
   format: 'building [:bar] :percent (:elapsed seconds)',
@@ -85,7 +73,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|jpeg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         exclude: /(node_modules)/,
         use: [
           {
@@ -96,14 +84,6 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.svg$/,
-        exclude: /(node_modules)/,
-        use: [
-          { loader: 'svg-sprite-loader', options: {} },
-          { loader: 'svgo-loader', options: {} },
-        ],
-      },
       { test: /\.(woff(2)?|eot|ttf|otf)$/, type: 'asset/resource' },
     ],
   },
@@ -111,8 +91,6 @@ module.exports = {
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      REACT_APP_ENV: JSON.stringify(process.env.REACT_APP_ENV),
-      ...getGlobalConstants(),
     }),
     new webpack.ProvidePlugin({
       React: 'react',
